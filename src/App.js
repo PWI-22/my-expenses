@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react"
+import ExpensesList from './components/List'
 
 const STORAGE_KEY = 'my-expenses'
 
@@ -8,13 +9,13 @@ const App = () => {
     const [date, setDate] = useState('')
     const [category, setCategory] = useState('')
 
-    const [expenses, setExpenses] = useState([])
+    const [items, setItems] = useState([])
 
     useEffect(() => { 
         const tempList = localStorage.getItem(STORAGE_KEY)
         
         if (tempList != null) {
-            setExpenses(JSON.parse(tempList))
+            setItems(JSON.parse(tempList))
         }
     }, [])
 
@@ -25,9 +26,9 @@ const App = () => {
             date,
             category,
         }
-        const newExpenses = [...expenses, expense]
+        const newExpenses = [...items, expense]
 
-        setExpenses(newExpenses)
+        setItems(newExpenses)
         localStorage.setItem(STORAGE_KEY, JSON.stringify(newExpenses))
         clearForm()
     }
@@ -46,23 +47,20 @@ const App = () => {
             Descrição: <br />
             <input type="text" size="35" value={description}
                 onChange={event => setDescription(event.target.value)} />
-            <div></div>
 
-            <br />
+            <br /><br />
 
             Data: <br />
             <input type="date" value={date}
                 onChange={event => setDate(event.target.value)} />
-            <div></div>
 
-            <br />
+            <br /><br />
 
             Valor: <br />
             <input type="text" value={value}
                 onChange={event => setValue(event.target.value)} />
-            <div></div>
 
-            <br />
+            <br /><br />
 
             Categoria: <br />
             <select value={category} onChange={event => setCategory(event.target.value)}>
@@ -73,36 +71,18 @@ const App = () => {
                 <option value="Transporte">Transporte</option>
                 <option value="Entretenimento">Entretenimento</option>
             </select>
-            <div></div>
 
-            <br />
+            <br /><br />
             <input type="button" value="Salvar" onClick={save} /> &nbsp;
             <input type="button" value="Cancelar" onClick={clearForm} />
 
             <br /><br />
-            <table width="70%" border="1">
-                <thead>
-                    <tr>
-                        <th width="40%">Descrição</th>
-                        <th width="20%">Categoria</th>
-                        <th width="20%">Data</th>
-                        <th width="20%">Valor</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {expenses.map((expense, index) => (
-                        <tr key={index}>
-                            <td>{expense.description}</td>
-                            <td>{expense.category}</td>
-                            <td>{expense.date}</td>
-                            <td>{expense.value}</td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
+
+            <ExpensesList expenses={items}/>
 
         </div>
     )
 }
+
 
 export default App
