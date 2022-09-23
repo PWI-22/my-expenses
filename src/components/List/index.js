@@ -1,3 +1,5 @@
+import ExpenseItem from "../Item"
+
 const ExpensesList = ({ expenses }) => {
 
     return (
@@ -12,12 +14,7 @@ const ExpensesList = ({ expenses }) => {
             </thead>
             <tbody>
                 {expenses.map((expense, index) => (
-                    <tr key={index}>
-                        <td>{expense.description}</td>
-                        <td>{expense.category}</td>
-                        <td>{expense.date}</td>
-                        <td>{expense.value}</td>
-                    </tr>
+                    <ExpenseItem key={index} expense={expense} />
                 ))}
             </tbody>
         </table>

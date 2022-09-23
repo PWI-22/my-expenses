@@ -1,25 +1,21 @@
 import { useEffect, useState } from "react"
 import ExpensesForm from "./components/Form"
 import ExpensesList from './components/List'
-
-const STORAGE_KEY = 'my-expenses'
+import { expenseService } from "./services"
 
 const App = () => {
     const [items, setItems] = useState([])
 
     useEffect(() => { 
-        const tempList = localStorage.getItem(STORAGE_KEY)
-        
-        if (tempList != null) {
-            setItems(JSON.parse(tempList))
-        }
+        const expenses = expenseService.getItems()
+        setItems(expenses)
     }, [])
 
     const updateList = (expense) => {
         const newExpenses = [...items, expense]
 
         setItems(newExpenses)
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(newExpenses))
+        expenseService.save(newExpenses)
     }
     
     return (
